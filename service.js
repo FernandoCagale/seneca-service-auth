@@ -1,12 +1,11 @@
 'use strict';
 
+require('dotenv').load({silent: true});
+
 const seneca = require('seneca')();
 const entity = require('seneca-entity');
 const mongoStore = require('seneca-mongo-store');
-const dotenv = require('dotenv');
 const auth = require('./lib/auth');
-
-dotenv.load({silent: true});
 
 const opts = {
   mongo: {
