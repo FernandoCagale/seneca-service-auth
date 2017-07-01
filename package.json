@@ -14,7 +14,10 @@
     "dotenv": "^4.0.0",
     "redis": "^2.7.1",
     "seneca": "^3.3.0",
-    "seneca-entity": "^2.0.0",
+    "seneca-balance-client": "^0.6.1",
+    "seneca-consul-registry": "^0.1.0",
+    "seneca-entity": "^2.0.2",
+    "seneca-mesh": "^0.10.0",
     "seneca-mongo-store": "^1.1.0"
   },
   "devDependencies": {
