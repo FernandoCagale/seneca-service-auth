@@ -19,7 +19,6 @@ const opts = {
     options: {}
   },
   mesh: {
-    tag: 'base',
     auto: true,
     host: process.env.ADDR || '127.0.0.1',
     listen: [{
@@ -41,10 +40,8 @@ const opts = {
   }
 };
 
+seneca.use(consul, opts.consul);
 seneca.use(entity);
 seneca.use(mongoStore, opts.mongo);
 seneca.use(auth);
-seneca.listen({
-  pin: 'role:auth,cmd:*',
-  port: process.env.PORT || 9002
-});
+seneca.use(mesh, opts.mesh);
