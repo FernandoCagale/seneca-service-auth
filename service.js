@@ -10,7 +10,7 @@ const mongoStore = require('seneca-mongo-store');
 const auth = require('./lib/auth');
 
 const PINS = [
-  'role:auth,cmd:*',
+  'role:auth,cmd:*'
 ];
 
 const opts = {
