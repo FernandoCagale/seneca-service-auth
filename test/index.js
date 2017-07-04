@@ -121,6 +121,25 @@ describe('test AUTH', () => {
     .ready(fin);
   });
 
+  it('login', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'login',
+      email: 'test@test.com',
+      password: 'password123'
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.token).to.exist();
+      expect(result.ok).to.equal(true);
+    })
+    .ready(fin);
+  });
+
   it('update', (fin) => {
     const seneca = testSeneca(fin);
 
@@ -161,25 +180,6 @@ describe('test AUTH', () => {
     .act(pattern, (ignore, result) => {
       expect(result.why).to.equal('ID not found');
       expect(result.ok).to.equal(false);
-    })
-    .ready(fin);
-  });
-
-  it('login', (fin) => {
-    const seneca = testSeneca(fin);
-
-    const pattern = {
-      role: ROLE,
-      cmd: 'login',
-      email: 'test@test.com',
-      password: 'password123'
-    };
-
-    seneca
-    .gate()
-    .act(pattern, (ignore, result) => {
-      expect(result.token).to.exist();
-      expect(result.ok).to.equal(true);
     })
     .ready(fin);
   });
