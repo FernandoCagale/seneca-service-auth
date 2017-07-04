@@ -68,7 +68,7 @@ describe('test AUTH', () => {
     .ready(fin);
   });
 
-  it('findById', (fin) => {
+  it('findById not found', (fin) => {
     const seneca = testSeneca(fin);
 
     const pattern = {
@@ -103,7 +103,7 @@ describe('test AUTH', () => {
     .ready(fin);
   });
 
-  it('verify', (fin) => {
+  it('verify not found', (fin) => {
     const seneca = testSeneca(fin);
 
     const pattern = {
@@ -144,7 +144,7 @@ describe('test AUTH', () => {
     .ready(fin);
   });
 
-  it('update', (fin) => {
+  it('update not found', (fin) => {
     const seneca = testSeneca(fin);
 
     const pattern = {
@@ -239,7 +239,7 @@ describe('test AUTH', () => {
     .ready(fin);
   });
 
-  it('logout', (fin) => {
+  it('logout found', (fin) => {
     const seneca = testSeneca(fin);
 
     const pattern = {
