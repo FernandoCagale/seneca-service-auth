@@ -26,8 +26,6 @@ function testSeneca (fin) {
 }
 
 describe('test AUTH', () => {
-  let _id;
-
   it('create', (fin) => {
     const seneca = testSeneca(fin);
 
@@ -42,32 +40,7 @@ describe('test AUTH', () => {
     seneca
     .gate()
     .act(pattern, (ignore, result) => {
-      expect(result.auth.email).to.equal('test@test.com');
-      expect(result.auth.name).to.equal('test');
-      expect(result.auth.password).to.exist();
-      expect(result.auth.id).to.exist();
-      expect(result.ok).to.equal(true);
-      _id = result.auth.id;
-    })
-    .ready(fin);
-  });
-
-  it('findById', (fin) => {
-    const seneca = testSeneca(fin);
-
-    const pattern = {
-      role: ROLE,
-      cmd: 'findById',
-      id: _id
-    };
-
-    seneca
-    .gate()
-    .act(pattern, (ignore, result) => {
-      expect(result.auth.email).to.equal('test@test.com');
-      expect(result.auth.name).to.equal('test');
-      expect(result.auth.password).to.exist();
-      expect(result.auth.id).to.exist();
+      expect(result.token).to.exist();
       expect(result.ok).to.equal(true);
     })
     .ready(fin);
@@ -86,16 +59,13 @@ describe('test AUTH', () => {
     seneca
     .gate()
     .act(pattern, (ignore, result) => {
-      expect(result.auth.email).to.equal('test@test.com');
-      expect(result.auth.name).to.equal('test');
-      expect(result.auth.password).to.exist();
-      expect(result.auth.id).to.exist();
+      expect(result.token).to.exist();
       expect(result.ok).to.equal(true);
     })
     .ready(fin);
   });
 
-  it('login e-mail invalid', (fin) => {
+  it('e-mail invalid', (fin) => {
     const seneca = testSeneca(fin);
 
     const pattern = {
@@ -114,7 +84,7 @@ describe('test AUTH', () => {
     .ready(fin);
   });
 
-  it('login password invalid', (fin) => {
+  it('password invalid', (fin) => {
     const seneca = testSeneca(fin);
 
     const pattern = {
@@ -129,29 +99,6 @@ describe('test AUTH', () => {
     .act(pattern, (ignore, result) => {
       expect(result.why).to.equal('Login or Password invalid');
       expect(result.ok).to.equal(false);
-    })
-    .ready(fin);
-  });
-
-  it('update', (fin) => {
-    const seneca = testSeneca(fin);
-
-    const pattern = {
-      role: ROLE,
-      cmd: 'update',
-      email: 'test_update@test.com',
-      name: 'test_update',
-      password: 'password_update'
-    };
-
-    seneca
-    .gate()
-    .act(pattern, (ignore, result) => {
-      expect(result.auth.email).to.equal('test_update@test.com');
-      expect(result.auth.name).to.equal('test_update');
-      expect(result.auth.password).to.exist();
-      expect(result.auth.id).to.exist();
-      expect(result.ok).to.equal(true);
     })
     .ready(fin);
   });
