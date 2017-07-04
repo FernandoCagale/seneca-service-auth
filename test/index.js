@@ -26,6 +26,7 @@ function testSeneca (fin) {
 }
 
 describe('test AUTH', () => {
+  let token;
   it('create', (fin) => {
     const seneca = testSeneca(fin);
 
@@ -42,6 +43,124 @@ describe('test AUTH', () => {
     .act(pattern, (ignore, result) => {
       expect(result.token).to.exist();
       expect(result.ok).to.equal(true);
+      token = result.token;
+    })
+    .ready(fin);
+  });
+
+  it('findById', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'findById',
+      token: token
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.auth.email).to.equals('test@test.com');
+      expect(result.auth.name).to.equals('test');
+      expect(result.auth.password).to.exist();
+      expect(result.ok).to.equal(true);
+    })
+    .ready(fin);
+  });
+
+  it('findById', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'findById',
+      token: 'token-invalid'
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.why).to.equal('ID not found');
+      expect(result.ok).to.equal(false);
+    })
+    .ready(fin);
+  });
+
+  it('verify', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'verify',
+      token: token
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.ok).to.equal(true);
+    })
+    .ready(fin);
+  });
+
+  it('verify', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'verify',
+      token: 'token-invalid'
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.why).to.equal('Token not found');
+      expect(result.ok).to.equal(false);
+    })
+    .ready(fin);
+  });
+
+  it('update', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'update',
+      token: token,
+      email: 'test_alter@test.com',
+      name: 'test_alter',
+      password: 'password_alter_123'
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.auth.email).to.equals('test_alter@test.com');
+      expect(result.auth.name).to.equals('test_alter');
+      expect(result.auth.password).to.exist();
+      expect(result.ok).to.equal(true);
+    })
+    .ready(fin);
+  });
+
+  it('update', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'update',
+      token: 'token-invalid',
+      email: 'test_alter@test.com',
+      name: 'test_alter',
+      password: 'password_alter_123'
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.why).to.equal('ID not found');
+      expect(result.ok).to.equal(false);
     })
     .ready(fin);
   });
@@ -98,6 +217,41 @@ describe('test AUTH', () => {
     .gate()
     .act(pattern, (ignore, result) => {
       expect(result.why).to.equal('Login or Password invalid');
+      expect(result.ok).to.equal(false);
+    })
+    .ready(fin);
+  });
+
+  it('logout', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'logout',
+      token: token
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.ok).to.equal(true);
+    })
+    .ready(fin);
+  });
+
+  it('logout', (fin) => {
+    const seneca = testSeneca(fin);
+
+    const pattern = {
+      role: ROLE,
+      cmd: 'logout',
+      token: token
+    };
+
+    seneca
+    .gate()
+    .act(pattern, (ignore, result) => {
+      expect(result.why).to.equal('Token not found');
       expect(result.ok).to.equal(false);
     })
     .ready(fin);
